@@ -1,0 +1,50 @@
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
+
+
+int lightpin = 27; // define LED pin number
+int fanpin=14;
+
+
+void setup() {
+ Serial.begin(115200);
+ SerialBT.begin("itg219"); //Bluetooth device name
+ Serial.println("The device started, now you can pair it with bluetooth!");
+ pinMode(lightpin, OUTPUT);
+ pinMode(fanpin, OUTPUT); // set LED pin as an output
+}
+
+
+void loop()
+{
+ if (SerialBT.available()) 
+ {
+   String c=SerialBT.readString();
+   Serial.println(SerialBT.readString());
+   if(c=="light on")
+   {
+     digitalWrite(lightpin,HIGH);
+   }
+      if(c=="light off")
+   {
+     digitalWrite(lightpin,LOW);
+   }
+   if(c=="fan on"){
+    digitalWrite(fanpin,HIGH);
+
+   }
+   if(c=="fan off"){
+    digitalWrite(fanpin,LOW);
+   }
+   if(c=="on all"){
+    digitalWrite(lightpin,HIGH);
+    digitalWrite(fanpin,HIGH);
+   }
+   if(c=="kill all"){
+    digitalWrite(lightpin,LOW);
+    digitalWrite(fanpin,LOW);
+   }
+ }
+ delay(2000);
+}
